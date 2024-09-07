@@ -1,0 +1,60 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-width: 600px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.table th,
+.table td {
+  padding: 12px 20px;
+  text-align: left;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #dddddd;
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+input[type="text"] {
+  padding: 8px 12px;
+  margin: 0 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-size: 1em;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: #009879;
+  box-shadow: 0 0 5px rgba(0, 152, 121, 0.5);
+}
+
+input[type="text"]::placeholder {
+  color: #aaaaaa;
+}
