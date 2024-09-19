@@ -23,6 +23,10 @@ const UserTable = () => {
         dispatch(setFilter({ field, value }));
     };
 
+    const handleClearFilter = (field: keyof Filter) => {
+        dispatch(setFilter({ field, value: '' }));
+    };
+
     const filteredUsers = useMemo(() => {
         if (!users.length) return [];
         return users.filter((user) =>
@@ -32,9 +36,14 @@ const UserTable = () => {
         );
     }, [users, filter]);
 
-    if (!filteredUsers.length) {
-        return <p>No users found.</p>;
-    }
+    const highlightMatch = (text: string, filterValue: string) => {
+        if (!filterValue) return text;
+        const regex = new RegExp(`(${filterValue})`, 'gi');
+        const parts = text.split(regex);
+        return parts.map((part, index) =>
+            regex.test(part) ? <mark key={index} className={styles.highlight}>{part}</mark> : part
+        );
+    };
 
     return (
         <div>
@@ -47,6 +56,7 @@ const UserTable = () => {
                                 field={field}
                                 value={filter[field]}
                                 onChange={handleFilterChange}
+                                onClear={() => handleClearFilter(field)}
                             />
                         ))}
                     </tr>
@@ -54,10 +64,10 @@ const UserTable = () => {
                 <tbody>
                     {filteredUsers.map((user) => (
                         <tr key={user.id}>
-                            <td>{user.name}</td>
-                            <td>{user.username}</td>
-                            <td>{user.email}</td>
-                            <td>{user.phone}</td>
+                            <td>{highlightMatch(user.name, filter.name)}</td>
+                            <td>{highlightMatch(user.username, filter.username)}</td>
+                            <td>{highlightMatch(user.email, filter.email)}</td>
+                            <td>{highlightMatch(user.phone, filter.phone)}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -70,13 +80,14 @@ interface TableHeaderCellProps {
     field: keyof Filter;
     value: string;
     onChange: (field: keyof Filter, value: string) => void;
+    onClear: () => void;
 }
 
-const TableHeaderCell = ({ field, value, onChange }: TableHeaderCellProps) => {
+const TableHeaderCell = ({ field, value, onChange, onClear }: TableHeaderCellProps) => {
     return (
         <th>
             {field.charAt(0).toUpperCase() + field.slice(1)}
-            <SearchInput value={value} onChange={(e) => onChange(field, e.target.value)} />
+            <SearchInput value={value} onChange={(e) => onChange(field, e.target.value)} onClear={onClear} />
         </th>
     );
 };
